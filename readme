@@ -1,0 +1,48 @@
+medico_web/
+│
+├── auth/
+│   ├── index.php         (login)
+│   ├── register.php
+│   ├── logout.php
+│
+├── doctor/
+│   ├── doctor_dashboard.php
+│   ├── patients.php
+│   ├── patient_view.php
+│   ├── patient_new.php
+│   ├── patient_edit.php
+│   ├── patient_delete.php
+│
+├── nurse/
+│   ├── nurse_dashboard.php
+│   ├── nurse_record_new.php
+│
+├── appointments/
+│   ├── appointments.php
+│   ├── appointment_new.php
+│   ├── appointment_edit.php
+│   ├── appointments_calendar.php
+│
+├── consultations/
+│   ├── consultation_new.php
+│
+├── reports/
+│   ├── report_new.php
+│   ├── patient_pdf.php
+│
+├── includes/
+│   ├── db.php
+│   ├── helpers.php
+│
+├── css/
+│   ├── auth.css
+│   ├── dashboard.css
+│
+├── js/
+│   ├── app.js
+│
+├── img/
+│   ├── fondoLogin.jpg
+│   ├── logo.png
+│
+└── readme.md
