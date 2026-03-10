@@ -1,3 +1,27 @@
+#Ejecutar proyecto
+- Abrir MAMP 
+- http://localhost:8888/medico_web/auth/
+
+##Iniciar repositorio de en GitHub
+git init
+git add .
+git commit -m "primer commit"
+git branch -M main
+git remote add origin https://github.com/DavidMur2304/WebMedica.git
+git push -u origin main
+
+##Actualizar repositorio de en GitHub
+git add .
+git commit -m "actualizacion"
+git push -u origin main
+
+##Actualizar repositorio de en GitHub desde local
+git pull
+
+##Ver historial de cambios
+git log
+
+##Estructura del proyecto
 medico_web/
 │
 ├── auth/
