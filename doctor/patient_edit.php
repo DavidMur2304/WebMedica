@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($full_name === "" || $dni === "" || $birth_date === "") {
         $error = "Nombre, DNI y fecha de nacimiento son obligatorios.";
+    } elseif ($phone !== "" && !preg_match('/^[0-9]+$/', $phone)) {
+        $error = "El teléfono solo puede contener números.";
     } else {
         $stmt = $conn->prepare("
             UPDATE patients 
@@ -88,7 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </aside>
 
     <main class="content">
-        <h1>Editar Paciente</h1>
+        <div class="top-row">
+            <h1>Editar Paciente</h1>
+            <a href="patients.php" class="btn-secondary">← Volver a pacientes</a>
+        </div>
 
         <?php if ($error): ?>
             <div class="alert error"><?= htmlspecialchars($error) ?></div>
@@ -128,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-row">
                 <div class="form-group">
                     <label>Teléfono</label>
-                    <input type="text" name="phone" value="<?= htmlspecialchars($patient['phone']) ?>">
+                    <input type="tel" name="phone" value="<?= htmlspecialchars($patient['phone']) ?>" inputmode="numeric" pattern="[0-9]*" title="Solo números" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
                 <div class="form-group">
                     <label>Email</label>

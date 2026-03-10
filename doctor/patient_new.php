@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($full_name === "" || $dni === "" || $birth_date === "") {
         $error = "Nombre, DNI y fecha de nacimiento son obligatorios.";
+    } elseif ($phone !== "" && !preg_match('/^[0-9]+$/', $phone)) {
+        $error = "El teléfono solo puede contener números.";
     } else {
         $stmt = $conn->prepare("INSERT INTO patients (full_name, dni, birth_date, gender, phone, email, address, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssssss", $full_name, $dni, $birth_date, $gender, $phone, $email, $address, $status);
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-row">
                 <div class="form-group">
                     <label>Teléfono</label>
-                    <input type="text" name="phone">
+                    <input type="tel" name="phone" inputmode="numeric" pattern="[0-9]*" title="Solo números" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
