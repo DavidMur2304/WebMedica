@@ -1,18 +1,21 @@
 <?php
 session_start();
 require_once __DIR__ . '/../includes/db.php';
-
+// Verificar que es enfermera
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'nurse') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID del paciente
 $patient_id = intval($_GET['id'] ?? 0);
+// Verificar que el ID del paciente es válido
 
 if ($patient_id <= 0) {
     die("Paciente inválido");
 }
 
+// Preparar la consulta para obtener los datos del paciente
 $stmt = $conn->prepare("SELECT * FROM patients WHERE id = ?");
 $stmt->bind_param("i", $patient_id);
 $stmt->execute();

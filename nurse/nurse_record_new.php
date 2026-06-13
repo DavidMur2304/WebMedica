@@ -6,10 +6,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'nurse') {
     header("Location: ../auth/index.php");
     exit;
 }
-
+// Obtener ID de la enfermera
 $nurse_id = $_SESSION['user_id'];
 
+// Variable para almacenar errores
 $error = "";
+
+// Variable para almacenar éxito
 $success = "";
 
 // Obtener lista de pacientes para el select
@@ -17,6 +20,7 @@ $patients_result = $conn->query("SELECT id, full_name FROM patients ORDER BY ful
 
 // Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
     $patient_id  = intval($_POST['patient_id'] ?? 0);
     $type        = trim($_POST['type'] ?? '');
     $description = trim($_POST['description'] ?? '');
@@ -24,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($patient_id <= 0 || $type === "" || $description === "") {
         $error = "Todos los campos son obligatorios.";
     } else {
+        // Preparar la consulta para guardar el registro
         $stmt = $conn->prepare("
             INSERT INTO nurse_records (patient_id, nurse_id, record_date, type, description) 
             VALUES (?, ?, NOW(), ?, ?)
@@ -39,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de nuevo registro de enfermería -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

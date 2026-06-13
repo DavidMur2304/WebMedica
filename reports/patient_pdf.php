@@ -3,12 +3,12 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../fpdf/fpdf.php';
 
 $patient_id = intval($_GET['id'] ?? 0);
-
+// Verificar que el ID del paciente es válido
 if ($patient_id <= 0) {
     die("Paciente inválido");
 }
 
-// Obtenemos datos del paciente
+// Preparar la consulta para obtener los datos del paciente
 $stmt = $conn->prepare("SELECT * FROM patients WHERE id = ?");
 $stmt->bind_param("i", $patient_id);
 $stmt->execute();

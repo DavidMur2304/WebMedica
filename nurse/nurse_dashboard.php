@@ -2,11 +2,13 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
+// Verificar que es enfermera
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'nurse') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID de la enfermera
 $nurse_id = $_SESSION['user_id'];
 
 // Registros del día
@@ -16,9 +18,13 @@ $stmt = $conn->prepare("
     FROM nurse_records 
     WHERE DATE(record_date) = ? AND nurse_id = ?
 ");
+// Bindear los parámetros
 $stmt->bind_param("si", $today, $nurse_id);
+// Ejecutar la consulta
 $stmt->execute();
+// Obtener el total de registros del día
 $today_total = $stmt->get_result()->fetch_assoc()['total'];
+// Cerrar la consulta
 $stmt->close();
 
 // Pacientes atendidos hoy (distintos)

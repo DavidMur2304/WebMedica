@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
-
+// Obtener ID del paciente
 $patient_id = intval($_GET['id'] ?? 0);
 if ($patient_id <= 0) {
     header("Location: ../doctor/patients.php");

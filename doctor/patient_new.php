@@ -6,10 +6,15 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     exit;
 }
 
+// Variable para almacenar errores
 $error = "";
+
+// Variable para almacenar éxito
 $success = "";
 
+// Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
     $full_name  = trim($_POST['full_name'] ?? '');
     $dni        = trim($_POST['dni'] ?? '');
     $birth_date = $_POST['birth_date'] ?? '';
@@ -19,11 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address    = trim($_POST['address'] ?? '');
     $status     = $_POST['status'] ?? 'Activo';
 
+    // Validar que los campos requeridos no estén vacíos
     if ($full_name === "" || $dni === "" || $birth_date === "") {
         $error = "Nombre, DNI y fecha de nacimiento son obligatorios.";
     } elseif ($phone !== "" && !preg_match('/^[0-9]+$/', $phone)) {
         $error = "El teléfono solo puede contener números.";
     } else {
+        // Preparar la consulta para guardar el paciente
         $stmt = $conn->prepare("INSERT INTO patients (full_name, dni, birth_date, gender, phone, email, address, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("ssssssss", $full_name, $dni, $birth_date, $gender, $phone, $email, $address, $status);
 
@@ -36,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de nuevo paciente -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

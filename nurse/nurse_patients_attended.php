@@ -2,6 +2,7 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
+// Verificar que es enfermera
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'nurse') {
     header("Location: ../auth/index.php");
     exit;

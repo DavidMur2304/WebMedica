@@ -2,18 +2,21 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID de la cita
 $appointment_id = intval($_GET['id'] ?? 0);
 
+// Verificar que el ID de la cita es válido
 if ($appointment_id <= 0) {
     die("Cita inválida");
 }
 
-// Obtener datos de la cita
+// Preparar la consulta para obtener los datos de la cita
 $stmt = $conn->prepare("
     SELECT * FROM appointments WHERE id = ?
 ");
@@ -26,16 +29,17 @@ if (!$appointment) {
     die("Cita no encontrada");
 }
 
-// Obtener lista de pacientes
+// Obtener la lista de pacientes ordenados alfabéticamente
 $patients = $conn->query("SELECT id, full_name FROM patients ORDER BY full_name ASC");
 
-// Guardar cambios
+// Guardar los cambios
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $patient_id = intval($_POST['patient_id']);
     $date = $_POST['date'];
     $time = $_POST['time'];
     $reason = trim($_POST['reason']);
 
+    // Preparar la consulta para actualizar los datos de la cita
     $update = $conn->prepare("
         UPDATE appointments 
         SET patient_id = ?, date = ?, time = ?, reason = ?
@@ -45,10 +49,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $update->execute();
     $update->close();
 
+    // Redirigir a la página de citas
     header("Location: appointments.php");
     exit;
 }
 ?>
+<!-- HTML para la página de edición de cita -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -57,10 +63,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <link rel="stylesheet" href="../css/dashboard.css">
 </head>
 
+<!-- Cuerpo de la página -->
 <body>
 
+<!-- Layout de la página -->
 <div class="layout">
 
+    <!-- Sidebar de la página -->
     <aside class="sidebar">
         <h2 class="logo">MedConnect</h2>
         <nav>
@@ -71,7 +80,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </nav>
     </aside>
 
+    <!-- Contenido de la página -->
     <main class="content">
+        <!-- Título de la página -->
         <h1>Editar Cita</h1>
 
         <div class="form-card">

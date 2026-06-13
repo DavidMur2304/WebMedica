@@ -2,15 +2,21 @@
 session_start();
 require_once __DIR__ . "/../includes/db.php";
 
+// Variable para almacenar errores
 $error = "";
+
+// Variable para almacenar éxito
 $success = "";
 
+// Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
     $name     = trim($_POST['name'] ?? '');
     $email    = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
     $role     = trim($_POST['role'] ?? '');
 
+    // Validar que los campos requeridos no estén vacíos
     if ($name === "" || $email === "" || $password === "" || $role === "") {
         $error = "Rellena todos los campos.";
     } else {
@@ -36,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de registro -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -114,11 +121,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
+<!-- Contenedor de autenticación -->
 <div class="auth-container">
+    <!-- Cuadro de autenticación -->
     <div class="auth-box">
         <h1 class="app-title">MedConnect</h1>
         <p class="subtitle">Crear Cuenta Nueva</p>
 
+        <!-- Mostrar errores -->
         <?php if ($error): ?>
             <div class="alert error"><?= htmlspecialchars($error) ?></div>
         <?php endif; ?>

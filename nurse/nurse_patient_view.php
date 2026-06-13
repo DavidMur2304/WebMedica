@@ -37,6 +37,7 @@ $stmt->execute();
 $records = $stmt->get_result();
 $stmt->close();
 ?>
+<!-- HTML para la página de vista de paciente -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

@@ -1,20 +1,22 @@
 <?php
 session_start();
 require_once __DIR__ . '/../includes/db.php'; 
-
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
-
+// Verificar que el ID del paciente es válido
 $patient_id = intval($_GET['patient_id'] ?? 0);
 if ($patient_id <= 0) {
     header("Location: ../doctor/patients.php");
-    exit;
+    exit;   
 }
 
+// Variable para almacenar errores
 $error = "";
 
+// Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $content = trim($_POST['content'] ?? '');
@@ -38,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de nuevo informe médico -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

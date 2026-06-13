@@ -7,10 +7,14 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'nurse') {
     exit;
 }
 
+// Variable para almacenar errores
 $error = "";
+// Variable para almacenar éxito
 $success = "";
 
+// Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
 
     $full_name = trim($_POST['full_name']);
     $dni = trim($_POST['dni']);
@@ -36,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de nuevo paciente -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,6 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="layout">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
         <h2 class="logo">MedConnect</h2>
         <nav>
@@ -57,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </nav>
     </aside>
 
+    <!-- CONTENIDO -->
     <main class="content">
 
         <h1>Registrar Nuevo Paciente</h1>

@@ -2,20 +2,27 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php'; 
 
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID del paciente
 $patient_id = intval($_GET['patient_id'] ?? 0);
+
+// Verificar que el ID del paciente es válido
 if ($patient_id <= 0) {
     header("Location: ../doctor/patients.php");
     exit;
 }
 
+// Variable para almacenar errores
 $error = "";
 
+// Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
     $reason      = trim($_POST['reason'] ?? '');
     $diagnosis   = trim($_POST['diagnosis'] ?? '');
     $treatment   = trim($_POST['treatment'] ?? '');

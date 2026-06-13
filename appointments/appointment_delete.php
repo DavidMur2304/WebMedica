@@ -2,11 +2,13 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID de la cita
 $appointment_id = intval($_GET['id'] ?? 0);
 
 if ($appointment_id <= 0) {
@@ -19,5 +21,6 @@ $stmt->bind_param("i", $appointment_id);
 $stmt->execute();
 $stmt->close();
 
+// Redirigir a la página de citas
 header("Location: appointments.php");
 exit;

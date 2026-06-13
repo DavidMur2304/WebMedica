@@ -1,11 +1,14 @@
 <?php
 session_start();
 require_once __DIR__ . '/../includes/db.php'; 
+
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID del médico
 $doctor_id = $_SESSION['user_id'];
 
 // Obtener citas

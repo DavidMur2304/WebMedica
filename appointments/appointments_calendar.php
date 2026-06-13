@@ -2,11 +2,13 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php'; 
 
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID del médico
 $doctor_id = $_SESSION['user_id'];
 
 // Cálculo de mes/año actual
@@ -19,6 +21,7 @@ if ($month < 1 || $month > 12) {
 
 $currentTimestamp = mktime(0, 0, 0, $month, 1, $year);
 
+// Obtener el nombre del mes
 $monthName = [
     1 => 'Enero',
     2 => 'Febrero',
@@ -34,10 +37,13 @@ $monthName = [
     12 => 'Diciembre',
 ][$month];
 
+// Obtener el número de días en el mes
 $daysInMonth = intval(date('t', $currentTimestamp));
+
+// Obtener el primer día de la semana
 $firstWeekday = intval(date('N', $currentTimestamp)); // 1 (Lunes) - 7 (Domingo)
 
-// Cargar citas del mes
+// Obtener las fechas de inicio y fin del mes
 $startDate = date('Y-m-01', $currentTimestamp);
 $endDate   = date('Y-m-t', $currentTimestamp);
 
@@ -64,8 +70,7 @@ while ($row = $result->fetch_assoc()) {
     $appointmentsByDay[$day][] = $row;
 }
 
-// Mes anterior / siguiente
-
+// Obtener el año y mes anterior y siguiente
 $prevTimestamp = strtotime('-1 month', $currentTimestamp);
 $nextTimestamp = strtotime('+1 month', $currentTimestamp);
 

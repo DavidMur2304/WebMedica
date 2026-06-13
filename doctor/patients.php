@@ -2,26 +2,38 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php'; 
 
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Variable para almacenar el texto de búsqueda
 $search = trim($_GET['search'] ?? '');
+
+// Consulta SQL para obtener los pacientes
 
 $sql = "SELECT * FROM patients";
 if ($search !== '') {
     $sql .= " WHERE full_name LIKE ? OR dni LIKE ?";
+    // Variable para almacenar el texto de búsqueda
     $like = "%$search%";
+    // Preparar la consulta para obtener los pacientes
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ss", $like, $like);
 } else {
+    // Preparar la consulta para obtener los pacientes
     $stmt = $conn->prepare($sql);
 }
 
+// Ejecutar la consulta
 $stmt->execute();
+// Obtener los resultados
 $result = $stmt->get_result();
+// Cerrar la consulta
 $stmt->close();
+
+// HTML para la página de lista de pacientes
 ?>
 <!DOCTYPE html>
 <html lang="es">

@@ -2,15 +2,19 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php'; 
 
+// Verificar que es médico
 if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'doctor') {
     header("Location: ../auth/index.php");
     exit;
 }
 
+// Obtener ID del médico
 $doctor_id = $_SESSION['user_id'];
+
+// Variable para almacenar errores
 $error = "";
 
-// paciente preseleccionado (si viene desde perfil)
+// Paciente preseleccionado (si viene desde perfil)
 $selected_patient_id = intval($_GET['patient_id'] ?? 0);
 
 // Obtener pacientes
@@ -23,9 +27,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $time       = $_POST['time'] ?? '';
     $reason     = trim($_POST['reason'] ?? '');
 
+    // Validar que los campos requeridos no estén vacíos
     if ($patient_id === 0 || $date === "" || $time === "") {
         $error = "Paciente, fecha y hora son obligatorios.";
     } else {
+        // Preparar la consulta para guardar la cita
         $stmt = $conn->prepare("
             INSERT INTO appointments (patient_id, doctor_id, date, time, reason)
             VALUES (?, ?, ?, ?, ?)
@@ -43,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de nueva cita -->
 <!DOCTYPE html>
 <html lang="es">
 <head>

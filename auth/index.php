@@ -2,27 +2,35 @@
 session_start();
 require_once __DIR__ . '/../includes/db.php';
 
+// Variable para almacenar errores
 $error = "";
 
+// Procesar formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Obtener datos del formulario
     $email    = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
+    // Validar que los campos requeridos no estén vacíos
     if ($email === "" || $password === "") {
         $error = "Rellena todos los campos.";
     } else {
+        // Preparar la consulta para obtener los datos del usuario
         $stmt = $conn->prepare("SELECT id, name, password, role FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
+        // Verificar si el usuario existe
         if ($user = $result->fetch_assoc()) {
+            // Verificar si la contraseña es correcta
             if (password_verify($password, $user['password'])) {
-
+                // Iniciar sesión
                 $_SESSION['user_id']   = $user['id'];
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_role'] = $user['role'];
 
+                // Redirigir según el rol del usuario
                 if ($user['role'] === 'doctor') {
                 header("Location: ../doctor/doctor_dashboard.php");
                 exit;
@@ -40,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+<!-- HTML para la página de inicio de sesión -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -123,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
+<!-- Contenedor de autenticación -->
 <div class="auth-container">
     <div class="auth-box">
         <h1 class="app-title">MedConnect</h1>
