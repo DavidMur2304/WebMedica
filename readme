@@ -16,7 +16,11 @@ git commit -m "actualizacion"
 git push -u origin main
 
 ##Actualizar repositorio de en GitHub desde local
-git pull
+git pull --no-rebase
+
+##Configuración local
+Copia `.env.example` a `.env.php` y ajusta credenciales de base de datos y API key.
+Esos archivos no se suben a GitHub.
 
 ##Ver historial de cambios
 git log
